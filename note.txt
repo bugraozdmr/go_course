@@ -1,0 +1,25 @@
+##### GO Kursu Max abimden #####
+
+# Go dosyası nasıl çalıştırılır
+go run app.go
+
+# Go ' izin vermez sadece " ile çalışır
+
+# sürekli çalıştırmak için go run yapılmaz // O durumda build yapacağız , build bize executable bir dosya verecektir
+
+# build etmek için önce module olusturmak gerek
+go mod init superusr.online/first-app
+
+# bundan sonra derle
+go build
+
+# çalıştırmak
+./first-app
+
+#* Önemli : go'nun entry pointi bulması için bu gerekli
+package main
+
+// ayrıca aynı c'deki gibi başlama fonksiyonu main olcak
+
+# eğer module dosyan varsa go.mod gibi direkt alttaki gibi çalıştırabilirsin
+go run . 

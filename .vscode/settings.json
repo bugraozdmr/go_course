@@ -1,0 +1,7 @@
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Ayu Mirage Bordered",
+    "editor.fontSize": 19,
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.fontSize": 16
+}
