@@ -23,3 +23,19 @@ package main
 
 # eğer module dosyan varsa go.mod gibi direkt alttaki gibi çalıştırabilirsin
 go run . 
+
+# bir klosor içine girip orda dosyalar oluşturursan içerde
+pachage klosor_adı
+
+gerekir
+
+
+## Go'da localde paket tanımladım ama metod ismi büyük harfle başlamazsa bulmuyor essek go
+1 saat uğraştım aq
+
+# 3. party paket yüklemek
+Örnek paket : https://pkg.go.dev/github.com/pallinder/go-randomdata
+- installation kısmında görürsün
+go get github.com/Pallinder/go-randomdata
+
+- eklenen paket go.mod'a yazılır
