@@ -1,5 +1,7 @@
 ##### GO Kursu Max abimden #####
 
+-- Go yüklemek -- brew install go ya da direkt sitesinden yükle kur sorun olursa silersin /usr/local/go
+
 # Go dosyası nasıl çalıştırılır
 go run app.go
 
