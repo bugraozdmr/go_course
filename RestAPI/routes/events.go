@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"rest/models"
 	"strconv"
@@ -35,8 +36,8 @@ func createEvent(context *gin.Context) {
 		return
 	}
 
-	event.ID = 1
-	event.UserID = 1
+	userId := context.GetInt64("userId")
+	event.UserID = userId
 
 	err = event.Save()
 
@@ -85,8 +86,10 @@ func updateEvent(context *gin.Context) {
 		return
 	}
 
+	userId := context.GetInt64("userId")
+	fmt.Println("first user id : ", userId)
 	// bu şekilde sorunsuz alabilirsin - zaten err onceden vardi ama boyle sorun yapmiyor ... _
-	_, err = models.GetEventById(eventId)
+	event, err := models.GetEventById(eventId)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
@@ -94,6 +97,16 @@ func updateEvent(context *gin.Context) {
 		})
 		return
 	}
+
+	fmt.Println("event user id :", event.UserID)
+
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized to update an event.",
+		})
+		return
+	}
+
 	var updateEvent models.Event
 	err = context.ShouldBindJSON(&updateEvent)
 
@@ -126,6 +139,7 @@ func deleteEvent(context *gin.Context) {
 		})
 		return
 	}
+	userId := context.GetInt64("userId")
 
 	// artik bunu kullanicam diyor
 	event, err := models.GetEventById(eventId)
@@ -133,6 +147,13 @@ func deleteEvent(context *gin.Context) {
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Could not fetch the event.",
+		})
+		return
+	}
+
+	if event.UserID != userId {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized to delete this event.",
 		})
 		return
 	}
@@ -147,6 +168,6 @@ func deleteEvent(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{
-		"message" : "Event deleted successfully",
+		"message": "Event deleted successfully",
 	})
 }

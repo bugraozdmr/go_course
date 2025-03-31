@@ -6,7 +6,9 @@
 # Gin Framework Kullanımı
 
 ## Kullanılacak Package
-**Gin** - [Gin GitHub Sayfası](https://github.com/gin-gonic/gin)
+**Gin** - [Gin GitHub Sayfası](https://github.com/gin-gonic/gin)<br>
+**Bcrypt** - go get -u golang.org/x/crypto/bcrypt <br>
+**golangJWT**
 
 ### Kurulum Adımları
 
