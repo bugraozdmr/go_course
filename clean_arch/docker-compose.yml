@@ -1,0 +1,18 @@
+# sudo docker-compose -p clean_arch up --build
+
+services:
+  clean.db:
+    image: postgres
+    container_name: clean.postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gimp
+    restart: always
+    ports:
+      - "5441:5432"
+    volumes:
+      - postgres_clean:/var/lib/postgresql/data 
+
+volumes:
+  postgres_clean:
