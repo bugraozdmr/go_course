@@ -1,0 +1,7 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "Title" : "Why Ferrari bans its customers",
+    "Body" : "Because they do stupid things !"
+}
