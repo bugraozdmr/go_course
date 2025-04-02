@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .character {
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 3rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+        .character h1 {
+            font-weight: bold;
+        }
+        .container-fluid {
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row h-100">
+            <!-- John Wick -->
+            <div class="col-4 character" style="background-image: url('images/johnwick.jpg');" id="johnwick">
+                <a href="characters/johnwick.html" class="text-decoration-none text-white">
+                    <h1>John Wick</h1>
+                </a>
+            </div>
+            <!-- Tyler Durden -->
+            <div class="col-4 character" style="background-image: url('images/tylerdurden.jpg');" id="tylerdurden">
+                <a href="characters/tylerdurden.html" class="text-decoration-none text-white">
+                    <h1>Tyler Durden</h1>
+                </a>
+            </div>
+            <!-- Yeni Karakter -->
+            <div class="col-4 character" style="background-image: url('images/voldemort.jpg');" id="voldemort">
+                <a href="characters/voldemort.html" class="text-decoration-none text-white">
+                    <h1>Voldemort</h1>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+    <script>
+                // Cookie'ye yazma fonksiyonu
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        // Cookie'den değer okuma fonksiyonu
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i].trim();
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Visitor ID oluşturma ve cookie'de saklama
+        function generateVisitorId() {
+            let visitorId = getCookie('visitor_id');
+            if (!visitorId) {
+                // Eğer daha önce bir visitor_id yoksa, yeni bir ID oluşturuluyor
+                visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
+                setCookie('visitor_id', visitorId, 365);  // 365 gün boyunca saklanacak
+            }
+            return visitorId;
+        }
+
+        function sendEventData(visitorId) {
+            const apiUrl = 'http://localhost:8080/shot';  // API URL'si
+
+            const eventData = {
+                VisitorID: visitorId,
+                EventType: 'click',  // Event türü
+                PageURL: window.location.href,  // Sayfanın URL'si
+                UserAgent: navigator.userAgent,  // Tarayıcı kullanıcı ajanı
+                Referer: document.referrer  // Referans (önceki sayfa)
+            };
+
+            console.log(visitorId, window.location.href, navigator.userAgent, document.referrer);
+
+            // Axios ile API'ye POST isteği gönderme
+            axios.post(apiUrl, eventData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('Event data sent successfully:', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending event data:', error);
+            });
+        }
+
+
+
+        // Sayfa yüklendiğinde visitor_id oluşturulacak ve veri gönderilecek
+        window.onload = function() {
+            const visitorId = generateVisitorId();
+            console.log('Visitor ID:', visitorId);  // ID'yi konsola yazdır
+
+            // API'ye event verisini gönder
+            sendEventData(visitorId);
+        };
+
+    </script>
+</body>
+</html>

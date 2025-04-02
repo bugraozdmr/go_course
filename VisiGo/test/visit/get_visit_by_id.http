@@ -1,0 +1,2 @@
+GET http://localhost:8080/visit/ef8f5372-99af-44aa-ae93-8f18600a73b2
+Content-Type: application/json

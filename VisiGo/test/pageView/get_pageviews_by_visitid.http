@@ -1,0 +1,2 @@
+GET http://localhost:8080/pageview/1338de6b-2f01-4ab7-b635-ddcb7cc10325
+Content-Type: application/json
