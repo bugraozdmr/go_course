@@ -1,0 +1,87 @@
+package main
+
+import (
+	"bufio"
+	"encoding/json"
+	"fiyathunter/helpers"
+	"fiyathunter/response"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
+)
+
+func main() {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Game : ")
+	input, _ := reader.ReadString('\n')
+	keyword := strings.ToLower(strings.TrimSpace(input))
+
+	variables := fmt.Sprintf(`{
+		"allowCountries":"TR",
+		"category":"games/edition/base|bundles/games|games/edition|editors|addons|games/demo|software/edition/base|games/experience|subscription",
+		"count":40,
+		"country":"TR",
+		"keywords":"%s",
+		"locale":"en-US",
+		"sortBy":"relevancy,viewableDate",
+		"sortDir":"DESC,DESC",
+		"tag":"",
+		"withPrice":true
+	}`, keyword)
+
+	extensions := `{
+		"persistedQuery": {
+			"version": 1,
+			"sha256Hash": "7d58e12d9dd8cb14c84a3ff18d360bf9f0caa96bf218f2c5fda68ba88d68a437"
+		}
+	}`
+
+	params := url.Values{}
+	params.Add("operationName", "searchStoreQuery")
+	params.Add("variables", variables)
+	params.Add("extensions", extensions)
+
+	fullURL := "https://store.epicgames.com/graphql?" + params.Encode()
+
+	req, err := http.NewRequest("GET", fullURL, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Accept-Language", "tr-TR,tr;q=0.9")
+	req.Header.Set("User-Agent", "Go-http-client")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var result response.EpicResponse
+	err = json.Unmarshal(body, &result)
+	if err != nil {
+		log.Fatal("JSON error:", err)
+	}
+
+	for _, game := range result.Data.Catalog.SearchStore.Elements {
+		fmt.Println("Title:", game.Title)
+		fmt.Println("Release Date:", game.ReleaseDate)
+		fmt.Println("Developer:", game.Developer)
+		fmt.Println("Publisher:", game.Publisher)
+		fmt.Println("Discounted Price:", game.Price.TotalPrice.FmtPrice.DiscountPrice)
+		fmt.Println("Normal Price:", game.Price.TotalPrice.FmtPrice.OriginalPrice)
+		fmt.Println("Image (OfferImageWide):", helpers.GetOfferImageWideURL(game.KeyImages))
+		fmt.Println("---")
+	}
+}
