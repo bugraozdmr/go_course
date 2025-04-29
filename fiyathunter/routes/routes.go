@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"fiyathunter/data"
+	"fiyathunter/handlers"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,13 +17,11 @@ func RegisterRoutes(server *gin.Engine) {
 	})
 
 	// epic games api
-	server.GET("/epic/game/:keyword", data.FetchDataEpic)
+	server.GET("/epic/game/:keyword", handlers.FetchDataEpic)
 
 	// gog games api
-	server.GET("/gog/game/:keyword", data.FetchDataGog)
+	server.GET("/gog/game/:keyword", handlers.FetchDataGog)
 
-
-	
 	// find best price
-	server.GET("/bestprice/:keyword", data.BestPrice)
+	server.GET("/bestprice/:keyword", handlers.BestPrice)
 }

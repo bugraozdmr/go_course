@@ -24,7 +24,7 @@ func GetUrl(key string) string {
 		log.Fatal("Error loading .env file")
 	}
 
-	epicURL := os.Getenv("EPIC_FULL_URL")
+	URL := os.Getenv(key)
 
-	return epicURL
+	return URL
 }

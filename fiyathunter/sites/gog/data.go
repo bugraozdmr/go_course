@@ -1,35 +1,19 @@
-package data
+package sites
 
 import (
 	"encoding/json"
 	"fiyathunter/helpers"
-	response "fiyathunter/response/gog"
-	"fmt"
+	response "fiyathunter/response"
+	fetch "fiyathunter/response/gog"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
-	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
-func FetchDataGog(c *gin.Context) {
-	keyword := c.Param("keyword")
-	//! No replacing
-	keyword = strings.ToLower(keyword)
+func FetchData(keyword string) response.GogResponse {
+	params := BuildVariables(keyword)
 
-	params := url.Values{}
-	params.Add("limit", "48")
-	params.Add("query", fmt.Sprintf("like:%s", keyword))
-	params.Add("order", "desc:score")
-	params.Add("productType", "in:game,pack,dlc,extras")
-	params.Add("page", "1")
-	params.Add("countryCode", "TR")
-	params.Add("locale", "en-US")
-	params.Add("currencyCode", "USD")
-
-	fullURL := "https://catalog.gog.com/v1/catalog?" + params.Encode()
+	fullURL := helpers.GetUrl("GOG_FULL_URL") + params
 
 	req, err := http.NewRequest("GET", fullURL, nil)
 	if err != nil {
@@ -52,7 +36,7 @@ func FetchDataGog(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	var jsonData response.GogFetch
+	var jsonData fetch.GogFetch
 	err = json.Unmarshal(body, &jsonData)
 	if err != nil {
 		log.Fatal("JSON parse error:", err)
@@ -60,7 +44,5 @@ func FetchDataGog(c *gin.Context) {
 
 	GogResponse := helpers.GogBindData(jsonData)
 
-	c.JSON(http.StatusOK, gin.H{
-		"data": GogResponse,
-	})
+	return GogResponse
 }
