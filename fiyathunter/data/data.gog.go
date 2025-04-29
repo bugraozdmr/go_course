@@ -19,8 +19,6 @@ func FetchDataGog(c *gin.Context) {
 	//! No replacing
 	keyword = strings.ToLower(keyword)
 
-	fmt.Println(keyword)
-
 	params := url.Values{}
 	params.Add("limit", "48")
 	params.Add("query", fmt.Sprintf("like:%s", keyword))

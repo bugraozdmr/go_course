@@ -21,4 +21,9 @@ func RegisterRoutes(server *gin.Engine) {
 
 	// gog games api
 	server.GET("/gog/game/:keyword", data.FetchDataGog)
+
+
+	
+	// find best price
+	server.GET("/bestprice/:keyword", data.BestPrice)
 }
