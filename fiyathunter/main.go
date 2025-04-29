@@ -14,5 +14,6 @@ func main() {
 
 	routes.RegisterRoutes(server)
 
-	server.Run(":8080")
+	// choose a port which can be opened 8888 / 80 / 8080 etc.
+	server.Run(":8888")
 }

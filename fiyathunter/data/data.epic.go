@@ -3,7 +3,7 @@ package data
 import (
 	"encoding/json"
 	"fiyathunter/helpers"
-	"fiyathunter/response"
+	"fiyathunter/response/epic"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func FetchData(c *gin.Context) {
+func FetchDataEpic(c *gin.Context) {
 	keyword := c.Param("keyword")
 	keyword = strings.ToLower(strings.ReplaceAll(keyword, " ", "+"))
 

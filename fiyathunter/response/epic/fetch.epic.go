@@ -21,12 +21,13 @@ type Image struct {
 }
 
 type Game struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Price       Price  `json:"price"`
-	Developer   string `json:"developerDisplayName"`
-	Publisher   string `json:"publisherDisplayName"`
-	ReleaseDate string `json:"releaseDate"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Price       Price   `json:"price"`
+	Developer   string  `json:"developerDisplayName"`
+	Publisher   string  `json:"publisherDisplayName"`
+	ReleaseDate string  `json:"releaseDate"`
+	ProductSlug string  `json:"productSlug"`
 	KeyImages   []Image `json:"keyImages"`
 }
 

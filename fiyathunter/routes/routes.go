@@ -10,8 +10,15 @@ import (
 func RegisterRoutes(server *gin.Engine) {
 	// base route
 	server.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "Waiting for your request"})
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Waiting for your request",
+			"hint":    "usage : /game/game_name",
+		})
 	})
 
-	server.GET("/game/:keyword", data.FetchData)
+	// epic games api
+	server.GET("/epic/game/:keyword", data.FetchDataEpic)
+
+	// gog games api
+	server.GET("/gog/game/:keyword", data.FetchDataGog)
 }
