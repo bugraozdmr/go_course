@@ -23,6 +23,7 @@ func EpicBindData(data epicFetch.EpicFetch) response.EpicResponse {
 	res.ReleaseDate = game.ReleaseDate
 	res.Slug = game.ProductSlug
 	res.Price = game.Price.TotalPrice.FmtPrice.DiscountPrice
+	res.PriceDecimal = game.Price.TotalPrice.DiscountPrice
 
 	if len(game.KeyImages) > 0 {
 		res.KeyImages = game.KeyImages[0].URL
